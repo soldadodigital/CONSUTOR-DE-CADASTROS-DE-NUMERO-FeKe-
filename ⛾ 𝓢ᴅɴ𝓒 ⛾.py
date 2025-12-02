@@ -3,13 +3,15 @@ import time
 import re  
 import sys  
 
+cache = {}  # Dicionário para armazenar resultados por número limpo
+
 def validar_numero_telefone(numero):
     """Valida se o número tem DDD ou código do país (+55)."""
-    
+
     numero_limpo = re.sub(r'[^\d+]', '', numero.strip())
 
     if numero_limpo.startswith('+55'):
-        
+
         if len(numero_limpo) >= 13:
             return True
     elif len(numero_limpo) >= 10:  
@@ -18,7 +20,7 @@ def validar_numero_telefone(numero):
 
 def gerar_resposta():
     """Gera e retorna um CPF, CNPJ e endereço aleatórios (como strings simples)."""
-   
+
     cpf = ''.join(str(random.randint(0, 9)) for _ in range(11))
     cpf_formatado = f"{cpf[:3]}.{cpf[3:6]}.{cpf[6:9]}-{cpf[9:]}"
 
@@ -38,16 +40,18 @@ def animacao_carregamento(duracao_segundos=8, mensagem="Consultando dados..."):
     """Exibe uma animação de spinner durante o tempo de espera."""
     spinner = ['|', '/', '-', '\\']
     for i in range(duracao_segundos * 2):  
-        
+
         sys.stdout.write(f"\r{mensagem} {spinner[i % 4]}")
         sys.stdout.flush()
         time.sleep(0.5) 
     sys.stdout.write("\r" + " " * (len(mensagem) + 2) + "\r")  
 
-
+animacao_carregamento(10, "ִֶָ⛾ 𝓢ᴅɴ𝓒 ⛾")
 print("="  * 50 ) 
+time.sleep(0.10)
 print("         ⛾ 𝓢ᴅɴ𝓒 ⛾")
-print("=" * 50)
+print("=" * 50 )
+animacao_carregamento(8, "ִֶָ𓂃 ࣪˖ ִֶָ🐇་༘࿐...")
 print("𝐁𝐄𝐌-𝐕𝐈𝐍𝐃𝐎 ao 𝐒𝐈𝐒𝐓𝐄𝐌𝐀 𝐃𝐄 𝐂𝐎𝐍𝐒𝐔𝐓𝐀♘♘♘!")
 print("- CPF (Cadastro de Pessoa Física)")
 print("- CNPJ (Cadastro Nacional da Pessoa Jurídica)")
@@ -56,18 +60,23 @@ print("Digite um número para começar. Exemplo: 11987654321 ou +5511987654321")
 print("=" * 50)
 
 while True:
-    
+
     numero_digitado = input("Digite um número: ")
+    numero_limpo = re.sub(r'[^\d+]', '', numero_digitado.strip())
     print(f"Você digitou: {numero_digitado}")
 
- 
+
     if not validar_numero_telefone(numero_digitado):
         print("O número não é verdadeiro (não possui DDD ou código do país válido).")
     else:
-       
-        animacao_carregamento(8, "Aguarde um momento...")
+        if numero_limpo in cache:
+            resultados = cache[numero_limpo]
+        else:
+            resultados = gerar_resposta()
+            cache[numero_limpo] = resultados
 
-        resultados = gerar_resposta()
+        animacao_carregamento(8, "𓂃 ࣪˖ ִֶָ🐇་༘࿐......")
+
         print("\nResultados gerados:")
         for chave, valor in resultados.items():
             print(f"{chave}: {valor}")
@@ -75,9 +84,11 @@ while True:
     while True:
         opcao = input("\nDeseja consultar outro número? (s/n): ").strip().lower()
         if opcao in ['s', 'sim']:
-            print("\n" + "=" * 50)  
+            print("\n" + "=" * 50) 
+            animacao_carregamento(8, "𓂃 ࣪˖ ִֶָ🐇་༘࿐......")
             break  
         elif opcao in ['n', 'não', 'nao']:
+            animacao_carregamento(8, "𓂃 ࣪˖ ִֶָ🐇་༘࿐......")
             print("Obrigado por usar o sistema! Até logo.")
             exit()  
         else:
