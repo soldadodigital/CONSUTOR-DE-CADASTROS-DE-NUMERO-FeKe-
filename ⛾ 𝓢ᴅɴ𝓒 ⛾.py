@@ -3,7 +3,7 @@ import time
 import re  
 import sys  
 
-cache = {}  # Dicionário para armazenar resultados por número limpo
+cache = {}  
 
 def validar_numero_telefone(numero):
     """Valida se o número tem DDD ou código do país (+55)."""
